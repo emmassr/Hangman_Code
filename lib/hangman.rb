@@ -49,3 +49,21 @@ class WordFileReader #created this classs to use a text file with a list of word
     file_data  # returns all the words which in is now in the array
   end
 end
+
+class Display
+  def input_letter
+    puts "Please enter a letter:"
+    gets.chomp
+
+  end
+end
+
+class Validator
+  def is_letter?(user_input)
+    if user_input.match(/[A-Za-z]/)
+      true
+    else
+      false
+    end
+  end
+end
