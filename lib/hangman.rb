@@ -1,5 +1,14 @@
 class Hangman
+def play_game
+display = Display.new
+display.welcome_user#welcomes user to the game
+#choose word from the computer list
+#Blank word shown
+#ask user to input letter
+#check user input against the computer word
+#
 
+end
   def check_word(letter, word)
     word.include?(letter)
   end
@@ -30,6 +39,7 @@ class Hangman
   }
   guessed_word
   end
+
 end
 
 
@@ -51,10 +61,19 @@ class WordFileReader #created this classs to use a text file with a list of word
 end
 
 class Display
+
+  def initialize(input=$stdin, output=$stdout)
+    @input = input
+    @output = output
+  end
+
   def input_letter
     puts "Please enter a letter:"
-    gets.chomp
+    @input.gets.chomp
+  end
 
+  def welcome_user
+    @output.puts "Welcome"
   end
 end
 
