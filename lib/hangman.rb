@@ -1,52 +1,70 @@
 class Hangman
-def play_game
-display = Display.new
-display.welcome_user#welcomes user to the game
-#choose word from the computer list
-#Blank word shown
-#ask user to input letter
-#check user input against the computer word
-#
+  def play_game
+    display = Display.new
+    display.welcome_user#welcomes user to the game
+    word_file_reader = WordFileReader.new#choose word from the computer list
+    words = word_file_reader.read_file(File.expand_path("test_words.txt"))
+    random_word_selector = RandomWordSelector.new
+    selected_word_from_list = random_word_selector.select_word_from(words)
+    print selected_word_from_list
+    word_guessed_by_user = GuessedWord.new.convert(selected_word_from_list)
+    display = Display.new
+    guess_word(8, selected_word_from_list, word_guessed_by_user, display)
 
-end
-  def check_word(letter, word)
-    word.include?(letter)
   end
 
-  def is_complete?(word)
-    !word.include?("_")
+  def check_word(guessed_letter, selected_word_from_list)
+    test = selected_word_from_list.downcase.include?(guessed_letter.downcase)
+    # print "This is a test" + test.to_s + "this is a word" + word.to_s + "this is a letter" + letter.to_s
+    return test
   end
 
-  def guess_word(attempts_remaining, word, letter)
-    while attempts_remaining > 0 do
-      check_word(letter, word) # check if true dont remove attempts
-      if check_word(letter, word)
+  def is_complete?(word_guessed_by_user)
+    !word_guessed_by_user.include?("_")
+  end
+
+  def guess_word(attempts_remaining, selected_word_from_list, word_guessed_by_user, display)
+    until attempts_remaining == 0
+      # || is_complete?(word_converted)
+      display.present_guessed_word(word_guessed_by_user)#Blank word shown ( Need to create word with blanks)
+      guessed_letter = display.input_letter#ask user to input letter
+      if check_word(guessed_letter, selected_word_from_list)
         attempts_remaining = attempts_remaining
+        word_guessed_by_user = show_letter(selected_word_from_list, word_guessed_by_user, guessed_letter)
+        #update the word
+        # print "this is working"
       else
         attempts_remaining -= 1
+        display.displays_incorrect_message
       end
     end
     attempts_remaining
   end
     #compare guess_word and check_word and update
-  def show_letter(computer_word, guessed_word, correct_letter)
-    chars = computer_word.split('')
-    hello = chars.each_with_index { |character, index|
-    if character == correct_letter
-        guessed_word.slice!(index)
-        guessed_word.insert(index, correct_letter)
-    end
-  }
-  guessed_word
+  def show_letter(selected_word_from_list, word_guessed_by_user, correct_letter)
+    chars = selected_word_from_list.split('') #splits each letter of the word
+    chars.each_with_index { |character, index|
+      if character == correct_letter
+        word_guessed_by_user.slice!(index)
+        word_guessed_by_user.insert(index, correct_letter)
+      end
+    }
+    word_guessed_by_user
   end
 
 end
 
+class GuessedWord
+  def convert(selected_word_from_list)
+    selected_word_from_list.gsub(/./, '_')
+
+  end
+end
 
 class RandomWordSelector
 
-  def select_word(words)
-    words.sample() #sample is used for arrays
+  def select_word_from(words)
+    words.sample().downcase #sample is used for arrays
   end
 
 end
@@ -68,13 +86,24 @@ class Display
   end
 
   def input_letter
-    puts "Please enter a letter:"
+    @output.puts "Please enter a letter:"
     @input.gets.chomp
+
   end
 
   def welcome_user
     @output.puts "Welcome"
   end
+
+  def present_guessed_word(word_guessed_by_user)
+    @output.puts "Please guess the following word: #{word_guessed_by_user}"
+
+  end
+
+  def displays_incorrect_message
+    @output.puts "Incorrect entry, please enter another letter"
+  end
+
 end
 
 class Validator
@@ -86,3 +115,5 @@ class Validator
     end
   end
 end
+# hangman = Hangman.new
+# hangman.play_game
