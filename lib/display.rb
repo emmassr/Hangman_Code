@@ -48,6 +48,7 @@ class Display
   def displays_number_of_attempts(attempts_remaining)
     @output.puts "You have #{attempts_remaining} attempts remaining" #test this message
   end
+
   HANGMAN_IMAGES = {
     7 =>
     "_______
@@ -107,102 +108,10 @@ class Display
    |_______"
  }
  def displays_hangman(attempts_remaining)
-   case attempts_remaining
-   when attempts_remaining -= 1
-     HANGMAN_IMAGES[7]
-   when attempts_remaining -= 2
-     HANGMAN_IMAGES[6]
-   when attempts_remaining -= 3
-     HANGMAN_IMAGES[5]
-   when attempts_remaining -= 4
-     HANGMAN_IMAGES[4]
-   when attempts_remaining -= 5
-     HANGMAN_IMAGES[3]
-   when attempts_remaining -= 6
-     HANGMAN_IMAGES[2]
-   when attempts_remaining -= 7
-     HANGMAN_IMAGES[1]
-   when attempts_remaining -= 8
-     HANGMAN_IMAGES[0]
+   if attempts_remaining < 8
+     @output.puts HANGMAN_IMAGES[attempts_remaining]
    else
       @output.puts ""
     end
   end
 end
-
-
-
-
-
-
-
-  #
-  # def displays_hangman(attempts_remaining)
-  #   case attempts_remaining
-  #   when 7
-  #     @output.puts "
-  #       _______
-  #      |
-  #      |
-  #      |
-  #      |
-  #      |_______"
-  #   when 6
-  #     @output.puts "
-  #       _______
-  #      |       |
-  #      |
-  #      |
-  #      |
-  #      |_______"
-  #    when 5
-  #      @output.puts "
-  #        _______
-  #       |       |
-  #       |       O
-  #       |
-  #       |
-  #       |_______"
-  #     when 4
-  #       @output.puts "
-  #         _______
-  #        |       |
-  #        |       O
-  #        |       |
-  #        |
-  #        |_______"
-  #      when 3
-  #     @output.puts "
-  #        _______
-  #       |       |
-  #       |       O
-  #       |      /|
-  #       |
-  #       |_______"
-  #     when 2
-  #     @output.puts "
-  #         _______
-  #        |       |
-  #        |       O
-  #        |      /|\\
-  #        |
-  #        |_______"
-  #      when 1
-  #        @output.puts "
-  #          _______
-  #         |       |
-  #         |       O
-  #         |      /|\\
-  #         |       /
-  #         |_______"
-  #       when 0
-  #       @output.puts "
-  #         _______
-  #        |       |
-  #        |       O
-  #        |      /|\\
-  #        |       /\\
-  #        |_______"
-  #
-  #      else
-  #     @output.puts ""
