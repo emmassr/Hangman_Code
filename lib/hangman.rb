@@ -7,8 +7,9 @@ MAX_NUMBER_OF_ATTEMPTS = 8
 
 class Hangman
 
-  def initialize(display)
+  def initialize(display, message)
     @display = display
+    @message = message
   end
 
   def play_game
@@ -35,8 +36,10 @@ class Hangman
 
   def guess_word(attempts_remaining, selected_word_from_list, word_guessed_by_user)
     until attempts_remaining == 0 || is_complete?(word_guessed_by_user)
-      @display.present_guessed_word(word_guessed_by_user)#Blank word shown ( Need to create word with blanks)
-      @display.displays_hangman(attempts_remaining)
+
+      @display.present(@message.present_guessed_word(word_guessed_by_user))#Blank word shown ( Need to create word with blanks)
+      @display.present(@message.displays_number_of_attempts(attempts_remaining))
+      @message.displays_hangman(attempts_remaining)
       guessed_letter = @display.get_valid_letter#ask user to input letter
       if check_word(guessed_letter, selected_word_from_list)
         attempts_remaining = attempts_remaining
@@ -44,8 +47,8 @@ class Hangman
         #update the word
       else
         attempts_remaining -= 1
-        @display.displays_incorrect_message
-        @display.displays_number_of_attempts(attempts_remaining) #test this message
+        @display.present(@message.displays_incorrect_message)
+        @display.present(@message.displays_number_of_attempts(attempts_remaining)) #test this message
       end
     end
     show_win_or_continue_playing_message(word_guessed_by_user, attempts_remaining, selected_word_from_list)
@@ -66,8 +69,8 @@ class Hangman
     if is_complete?(word_guessed_by_user)
       @display.displays_winning_message(word_guessed_by_user)
     else
-      @display.displays_hangman(attempts_remaining)
-      @display.displays_losing_message(selected_word_from_list)
+      @display.present(@message.displays_hangman(attempts_remaining))
+      @display.present(@message.displays_losing_message(selected_word_from_list))
     end # you win or lose here
   end
 

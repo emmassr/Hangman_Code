@@ -6,7 +6,8 @@ describe Hangman do
     input = StringIO.new("z")
     @output = StringIO.new
     display = Display.new(input, @output)
-    @hangman = Hangman.new(display)
+    message = Message.new 
+    @hangman = Hangman.new(display, message)
   end
 
 
